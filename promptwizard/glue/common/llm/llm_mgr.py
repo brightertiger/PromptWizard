@@ -31,7 +31,7 @@ def call_api(messages):
         client = AzureOpenAI(
             api_version=os.environ["OPENAI_API_VERSION"],
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-            api_key=os.environ["AZURE_OPENAI_API_KEY']
+            api_key=os.environ["AZURE_OPENAI_API_KEY"]
             )
         response = client.chat.completions.create(
             model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
