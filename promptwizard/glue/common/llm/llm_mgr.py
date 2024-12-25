@@ -20,13 +20,23 @@ def call_api(messages):
     from azure.identity import get_bearer_token_provider, AzureCliCredential
     from openai import AzureOpenAI
 
-    if os.environ['USE_OPENAI_API_KEY'] == "True":
+    if os.environ.get('USE_OPENAI_API_KEY') == "True":
         client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-
         response = client.chat.completions.create(
         model=os.environ["OPENAI_MODEL_NAME"],
         messages=messages,
         temperature=0.0,
+        )
+    elif os.environ.get("AZURE_OPENAI_API_KEY"):
+        client = AzureOpenAI(
+            api_version=os.environ["OPENAI_API_VERSION"],
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY']
+            )
+        response = client.chat.completions.create(
+            model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+            messages=messages,
+            temperature=0.0,
         )
     else:
         token_provider = get_bearer_token_provider(
@@ -42,7 +52,6 @@ def call_api(messages):
             messages=messages,
             temperature=0.0,
         )
-
     prediction = response.choices[0].message.content
     return prediction
 
