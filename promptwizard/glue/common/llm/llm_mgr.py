@@ -28,8 +28,9 @@ def call_api(messages):
         temperature=0.0,
         )
     elif os.environ.get("AZURE_OPENAI_API_KEY"):
+        print("Calling OpenAI Model")
         client = AzureOpenAI(
-            api_version=os.environ["OPENAI_API_VERSION"],
+            api_version=os.environ["AZURE_OPENAI_API_VERSION"],
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
             api_key=os.environ["AZURE_OPENAI_API_KEY"]
             )
